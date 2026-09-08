@@ -1,11 +1,5 @@
 {
   "outputDirectory": "public",
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://metaclean-4k.onrender.com/api/:path*"
-    }
-  ],
   "headers": [
     {
       "source": "/sw.js",
@@ -33,13 +27,11 @@
       "headers": [
         { "key": "X-Content-Type-Options",    "value": "nosniff" },
         { "key": "X-Frame-Options",           "value": "DENY" },
-        { "key": "X-DNS-Prefetch-Control",    "value": "off" },
         { "key": "Referrer-Policy",           "value": "no-referrer" },
-        { "key": "Permissions-Policy",        "value": "camera=(), microphone=(), geolocation=(), payment=()" },
         { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self' https://metaclean-4k.onrender.com; worker-src 'self'; manifest-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self' https://metaclean-4k.onrender.com; worker-src 'self'; manifest-src 'self'; frame-ancestors 'none'"
         }
       ]
     }

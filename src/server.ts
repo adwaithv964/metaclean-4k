@@ -42,8 +42,8 @@ const readBody = (req: http.IncomingMessage): Promise<Buffer> =>
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const json = (res: http.ServerResponse, status: number, data: unknown, requestId: string) => {
-  headers(res, requestId);
+const json = (res: http.ServerResponse, status: number, data: unknown, requestId: string, req?: http.IncomingMessage) => {
+  headers(res, requestId, false, req);
   res.statusCode = status;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.end(JSON.stringify(data));
@@ -124,7 +124,7 @@ const server = http.createServer(async (req, res) => {
 
     // CORS preflight — no rate limiting needed
     if (method === 'OPTIONS') {
-      headers(res, requestId);
+      headers(res, requestId, false, req);
       res.statusCode = 204;
       return res.end();
     }
@@ -132,7 +132,7 @@ const server = http.createServer(async (req, res) => {
     // Health check — light rate limit
     if (method === 'GET' && u.pathname === '/api/health') {
       rateLimit(req, 'api');
-      return json(res, 200, { ok: true, service: 'metaclean-4k', node: process.version, time: new Date().toISOString() }, requestId);
+      return json(res, 200, { ok: true, service: 'metaclean-4k', node: process.version, time: new Date().toISOString() }, requestId, req);
     }
 
     // Download endpoint — validate ID strictly before filesystem access
@@ -141,7 +141,7 @@ const server = http.createServer(async (req, res) => {
       const id = decodeURIComponent(u.pathname.slice('/api/download/'.length));
       validateId(id);                        // ← rejects non-UUID IDs
       const s = await readStored(id);
-      headers(res, requestId);
+      headers(res, requestId, false, req);
       res.setHeader('Content-Type', s.report.after.file.mime);
       const safeName = sanitizeFilename(s.report.downloadName);   // ← header-injection safe
       res.setHeader('Content-Disposition', `attachment; filename="${safeName}"`);
@@ -155,7 +155,7 @@ const server = http.createServer(async (req, res) => {
       const id = decodeURIComponent(u.pathname.slice('/api/report/'.length));
       validateId(id);                        // ← rejects non-UUID IDs
       const s = await readStored(id);
-      headers(res, requestId, true);         // ← HTML CSP
+      headers(res, requestId, true, req);         // ← HTML CSP
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       res.end(reportHtml(s.report));
       return;
@@ -167,7 +167,7 @@ const server = http.createServer(async (req, res) => {
       const { file, fields, parts } = await uploadParts(req);
 
       if (u.pathname === '/api/analyze') {
-        return json(res, 200, { ok: true, analysis: await analyze(file.data, file.filename) }, requestId);
+        return json(res, 200, { ok: true, analysis: await analyze(file.data, file.filename) }, requestId, req);
       }
 
       if (u.pathname === '/api/clean') {

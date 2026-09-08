@@ -1,14 +1,10 @@
-# Vercel serves only the public/ static files.
-# The Node.js backend runs on Render, not Vercel.
-# The vercel-build script in package.json is a no-op, so
-# these server-side files are hidden for cleanliness only.
-src/
-dist/
-tests/
-scripts/
-fixtures/
+# Only hide non-essential files that aren't needed for the TypeScript build.
+# src/, tests/, tsconfig.json must remain visible so `tsc` can compile.
+# Vercel serves ONLY the public/ directory (set in vercel.json outputDirectory).
+# The compiled dist/ is ignored by Vercel because outputDirectory points to public/.
+docker-compose.yml
+Dockerfile
+render.yaml
 docs/
 tmp/
-Dockerfile
-docker-compose.yml
-render.yaml
+fixtures/

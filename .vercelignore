@@ -1,0 +1,15 @@
+# Tell Vercel to ignore all server-side files.
+# This is a pure static site — only the public/ directory is served.
+# The Node.js backend runs on Render, not Vercel.
+src/
+dist/
+tests/
+scripts/
+node_modules/
+tsconfig.json
+Dockerfile
+docker-compose.yml
+render.yaml
+fixtures/
+docs/
+tmp/

@@ -93,10 +93,13 @@ const CSP_REPORT = [
  * @param isHtml  When true, uses a relaxed CSP suitable for HTML report pages.
  */
 export function headers(res: ServerResponse, requestId: string, isHtml = false, req?: IncomingMessage): void {
-  // CORS — allow the Vercel frontend and local dev
+  // CORS — allow the Vercel frontend (production + all preview URLs) and local dev
   const origin = req?.headers.origin ?? '';
-  const allowed = ['https://metaclean-4k.vercel.app', 'http://localhost:8787', 'http://127.0.0.1:8787'];
-  const corsOrigin = allowed.includes(origin) ? origin : 'https://metaclean-4k.vercel.app';
+  const isAllowed =
+    origin === 'https://metaclean-4k.onrender.com' ||
+    /^https:\/\/metaclean-4k[a-zA-Z0-9-]*\.vercel\.app$/.test(origin) ||
+    /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+  const corsOrigin = isAllowed ? origin : 'https://metaclean-4k.vercel.app';
   res.setHeader('Access-Control-Allow-Origin', corsOrigin);
   res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');

@@ -1,0 +1,22 @@
+{
+  "name": "metaclean-4k",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.16.0" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test dist/tests/*.test.js",
+    "dev": "node dist/src/server.js",
+    "start": "node dist/src/server.js",
+    "prepare-local-runtime": "node scripts/prepare-runtime.mjs"
+  },
+  "dependencies": { "sharp": "0.35.4" },
+  "optionalDependencies": { "@contentauth/c2pa-node": "0.9.3" },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,19 @@
+services:
+  metaclean:
+    build: .
+    ports:
+      - "8787:8787"
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "8787"
+      MAX_UPLOAD_BYTES: "104857600"
+      MAX_PIXELS: "100000000"
+    read_only: true
+    tmpfs:
+      - /app/tmp:rw,nosuid,nodev,noexec,size=512m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 128
+    mem_limit: 1g

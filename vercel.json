@@ -1,10 +1,9 @@
 {
-  "version": 2,
   "outputDirectory": "public",
-  "builds": [
+  "rewrites": [
     {
-      "src": "public/**",
-      "use": "@vercel/static"
+      "source": "/api/:path*",
+      "destination": "https://metaclean-4k.onrender.com/api/:path*"
     }
   ],
   "headers": [
@@ -12,50 +11,37 @@
       "source": "/sw.js",
       "headers": [
         { "key": "Service-Worker-Allowed", "value": "/" },
-        { "key": "Cache-Control", "value": "no-cache" },
-        { "key": "Content-Type", "value": "text/javascript; charset=utf-8" }
+        { "key": "Cache-Control",          "value": "no-cache" },
+        { "key": "Content-Type",           "value": "text/javascript; charset=utf-8" }
       ]
     },
     {
       "source": "/manifest.json",
       "headers": [
-        { "key": "Content-Type", "value": "application/manifest+json" },
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
+        { "key": "Content-Type",   "value": "application/manifest+json" },
+        { "key": "Cache-Control",  "value": "public, max-age=86400" }
       ]
     },
     {
-      "source": "/(.*\\.(png|ico|svg|webmanifest))",
+      "source": "/:path*(png|ico|webmanifest)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=604800, immutable" }
       ]
     },
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "headers": [
-        { "key": "X-Content-Type-Options",  "value": "nosniff" },
-        { "key": "X-Frame-Options",         "value": "DENY" },
-        { "key": "X-DNS-Prefetch-Control",  "value": "off" },
-        { "key": "Referrer-Policy",         "value": "no-referrer" },
-        { "key": "Permissions-Policy",      "value": "camera=(), microphone=(), geolocation=(), payment=()" },
+        { "key": "X-Content-Type-Options",    "value": "nosniff" },
+        { "key": "X-Frame-Options",           "value": "DENY" },
+        { "key": "X-DNS-Prefetch-Control",    "value": "off" },
+        { "key": "Referrer-Policy",           "value": "no-referrer" },
+        { "key": "Permissions-Policy",        "value": "camera=(), microphone=(), geolocation=(), payment=()" },
         { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" },
         {
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self' https://metaclean-4k.onrender.com; worker-src 'self'; manifest-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
         }
       ]
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "https://metaclean-4k.onrender.com/api/$1",
-      "headers": {
-        "Access-Control-Allow-Origin": "*"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
     }
   ]
 }

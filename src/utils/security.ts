@@ -107,7 +107,7 @@ export function headers(res: ServerResponse, requestId: string, isHtml = false):
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('X-DNS-Prefetch-Control', 'off');
   res.setHeader('Referrer-Policy', 'no-referrer');
-  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=()');
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('Content-Security-Policy', isHtml ? CSP_REPORT : CSP_API);
 
